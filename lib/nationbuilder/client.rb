@@ -43,7 +43,7 @@ class NationBuilder::Client
     elsif response.code == 429 && response.headers["retry-after"]
       sleep(response.headers["retry-after"].to_i + 1)
       call(action, path, body)
-    elsif expired_token_error?(response_body) && @nation.refresh_oauth_token
+    elsif expired_token_error?(response_body) && refresh_oauth_token
       call(action, path, body)
     else
       raise OAuth2::Error.new(response)
@@ -51,6 +51,11 @@ class NationBuilder::Client
   end
 
   private
+
+  def refresh_oauth_token
+    # TODO: implement
+    raise OAuth2::Error.new("token expired")
+  end
 
   def response_status(code)
     case code

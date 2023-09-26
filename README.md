@@ -1,24 +1,32 @@
-# NationBuilder
+# NationBuilder API Client
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nationbuilder/api`. To experiment with that code, run `bin/console` for an interactive prompt.
+A simple, flexible NationBuilder API client that is compatible with V1 and V2 APIs, using the OAuth2 authentication and refresh flows, and respects the "retry-after" rate limiting headers.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ bundle add nationbuilder-api
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ gem install nationbuilder-api
 
 ## Usage
 
-TODO: Write usage instructions here
+The gem expects that you have a "nation" object that has attributes for `slug`, `token`, `refresh_token`, `token_expires_at`. This could be an ActiveModel object, or a simple hash.
+
+Create a client with `client = NationBuilder::Client.new(nation)`
+
+Then make API calls with that client with `response = client.call(:get, "/api/v1/people")`
+
+`response` will contain `{code: 200, status: :success, body: {...}}`
+
+For `put` or `post` calls, include the body like so `response = client.call(:put, "/api/v1/people/2", {person: {first_name: "Alex"}})`
+
+## Todo
+
+Still need to implement token refreshing.
 
 ## Development
 
@@ -28,7 +36,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nationbuilder-api. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/nationbuilder-api/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/acflint/nationbuilder-api. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/acflint/nationbuilder-api/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -36,4 +44,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the NationBuilder project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/nationbuilder-api/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the NationBuilder project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/acflint/nationbuilder-api/blob/main/CODE_OF_CONDUCT.md).
