@@ -26,7 +26,7 @@ class NationBuilder::Client
   end
 
   def call(path, action, body = {})
-    url = NationBuilder::Utils::UrlBuilder(@nation, path).call
+    url = NationBuilder::Utils::UrlBuilder.call(@nation, path)
     response = HTTParty.send(
       url,
       action,
