@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
 class NationBuilder::Client
-  def initialize(slug:, access_token:, refresh_token:, expires_at:)
-    @base_url = "https://#{slug}.nationbuilder.com"
-    @access_token = access_token
-    @refresh_token = refresh_token
-    @expires_at = expires_at
+  REQUIRED_ATTRIBUTES = %i[slug access_token refresh_token expires_at].freeze
+
+  def initialize(nation:, options: {})
+    REQUIRED_ATTRIBUTES.each do |attribute|
+      next if nation[attribute].present?
+
+      raise ArgumentError, "NationBuilder::Client nation must respond to #{attribute}"
+    end
+
+    slug = nation[:slug]
+    access_token = nation[:access_token]
+    refresh_token = nation[:refresh_token]
+    expires_at = nation[:expires_at]
+
+    @options = options
+
     @nation = {
       slug:,
       access_token:,
@@ -15,14 +26,14 @@ class NationBuilder::Client
   end
 
   def call(path:, action:, body:)
-    url = NationBuilder::Utils::UrlBuilder.new(@nation, path).url
+    url = NationBuilder::Utils::UrlBuilder.new(nation: @nation, path: path).url
     response = HTTParty.send(
       url,
       action,
       body: body,
-      headers: {Accept: "application/json", "Content-type": "application/json"},
-      timeout: 30,
-      uri_adapter: Addressable::URI
+      headers: {Accept: "application/json", "Content-type": "application/json"}.merge(@options.fetch(:headers, {})),
+      timeout: @options.fetch(:timeout, 30),
+      uri_adapter: @options.fetch(:uri_adapter, Addressable::URI)
     )
 
     response_body = JSON.parse(response.body || "{}")
