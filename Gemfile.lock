@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nationbuilder-api (0.1.0)
+    nationbuilder-api (0.1.1)
       addressable (~> 2.8)
       httparty (~> 0.21.0)
       ruby-limiter (~> 2.2)
