@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NationBuilder::Client
-  REQUIRED_ATTRIBUTES = %i[slug token refresh_token token_token_expires_at].freeze
+  REQUIRED_ATTRIBUTES = %i[slug token refresh_token token_expires_at].freeze
 
   def initialize(nation:, options: {})
     REQUIRED_ATTRIBUTES.each do |attribute|
