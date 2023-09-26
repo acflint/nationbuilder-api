@@ -5,7 +5,7 @@ class NationBuilder::Client
 
   def initialize(nation, options = {})
     REQUIRED_ATTRIBUTES.each do |attribute|
-      next if nation[attribute].present?
+      next if nation[attribute]
 
       raise ArgumentError, "NationBuilder::Client nation must respond to #{attribute}"
     end
@@ -25,11 +25,11 @@ class NationBuilder::Client
     }
   end
 
-  def call(path, action, body = {})
+  def call(action, path, body = {})
     url = NationBuilder::Utils::UrlBuilder.call(@nation, path)
     response = HTTParty.send(
-      url,
       action,
+      url,
       body: body,
       headers: {Accept: "application/json", "Content-type": "application/json"}.merge(@options.fetch(:headers, {})),
       timeout: @options.fetch(:timeout, 30),
@@ -40,11 +40,11 @@ class NationBuilder::Client
 
     if response.success?
       {status: response_status(response.code), code: response.code, body: response_body}
-    elsif response.code == 429 && response.headers["retry-after"].present?
+    elsif response.code == 429 && response.headers["retry-after"]
       sleep(response.headers["retry-after"].to_i + 1)
-      NbApiRequest.call(@nation, @action, @path, @body)
+      call(action, path, body)
     elsif expired_token_error?(response_body) && @nation.refresh_oauth_token
-      NbApiRequest.call(@nation, @action, @path, @body)
+      call(action, path, body)
     else
       raise OAuth2::Error.new(response)
     end
