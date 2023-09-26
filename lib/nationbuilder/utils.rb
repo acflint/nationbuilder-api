@@ -2,7 +2,7 @@ module NationBuilder::Utils
   module UrlBuilder
     module_function
 
-    def initialize(path:, nation:)
+    def initialize(nation, path)
       @nation = nation
       @path = path
     end

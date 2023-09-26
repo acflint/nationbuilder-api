@@ -3,7 +3,7 @@
 class NationBuilder::Client
   REQUIRED_ATTRIBUTES = %i[slug token refresh_token token_expires_at].freeze
 
-  def initialize(nation:, options: {})
+  def initialize(nation, options = {})
     REQUIRED_ATTRIBUTES.each do |attribute|
       next if nation[attribute].present?
 
@@ -25,8 +25,8 @@ class NationBuilder::Client
     }
   end
 
-  def call(path:, action:, body:)
-    url = NationBuilder::Utils::UrlBuilder.new(nation: @nation, path: path).url
+  def call(path, action, body = {})
+    url = NationBuilder::Utils::UrlBuilder.new(@nation, path).url
     response = HTTParty.send(
       url,
       action,
