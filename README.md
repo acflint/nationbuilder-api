@@ -18,13 +18,20 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 The gem expects that you have a "nation" object that has attributes for `slug`, `token`, `refresh_token`, `token_expires_at`. This could be an ActiveModel object, or a simple hash.
 
-Create a client with `client = NationBuilder::Client.new(nation)`
+```ruby
+nation = {slug: "my-nation"
+token: "1234abcd"
+refresh_token: "0987abc"
+token_expires_at: 12344567}
 
-Then make API calls with that client with `response = client.call(:get, "/api/v1/people")`
+# Create a client
+client = NationBuilder::Client.new(nation)
 
-`response` will contain `{code: 200, status: :success, body: {...}}`
-
-For `put` or `post` calls, include the body like so `response = client.call(:put, "/api/v1/people/2", {person: {first_name: "Alex"}})`
+# Make API request
+response = client.call(:get, "/api/v1/people")
+# or
+response = client.call(:put, "/api/v1/people/2", {person: {first_name: "Alex"}})
+```
 
 ## Todo
 
