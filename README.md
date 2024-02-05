@@ -1,5 +1,7 @@
 [![Gem Version](https://badge.fury.io/rb/nationbuilder-api.svg)](https://badge.fury.io/rb/nationbuilder-api)
 
+# THIS IS A WORK IN PROGRESS. DOES NOT FUNCTION YET.
+
 # NationBuilder API Client
 
 A simple, flexible NationBuilder API client that is compatible with V1 and V2 APIs, using the OAuth2 authentication and refresh flows, and respects the "retry-after" rate limiting headers.
